@@ -8,7 +8,7 @@ how to contribute in Lepas Aja project
 - [How to Contribute](#how-to-contribute)
 - [Code Review](#code-review)
 - [Commit message](#commit-message)
-
+- [Sytling code](#styling-code)
 ## Make issue & merge request
 
 1. buka tab issue dan klik new issue
@@ -58,3 +58,15 @@ A typical git commit message will look like
 - `perf`: A code that improves performance
 - `style`: A code that is related to styling
 - `test`: Adding new test or making changes to existing test
+
+## Styling Code
+
+Sebelum melakukan commit, jalankan perintah berikut untuk format code agar konsisten.
+
+```sh
+yarn lintfix
+
+#or
+
+npm run lintfix
+```
