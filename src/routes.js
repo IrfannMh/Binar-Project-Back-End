@@ -1,7 +1,7 @@
-const { handleGetRoot } = require("./controllers/MainController");
+const { handleGetRoot } = require('./controllers/MainController');
 
 module.exports = (router) => {
-  router.get("/", handleGetRoot);
+  router.get('/', handleGetRoot);
 
   return router;
 };

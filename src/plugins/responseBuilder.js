@@ -1,20 +1,20 @@
 function ok(code, data = null) {
   this.status(code).json({
-    status: "OK",
+    status: 'OK',
     data,
   });
 }
 
 function fail(code, data = null) {
   this.status(code).json({
-    status: "FAIL",
+    status: 'FAIL',
     data,
   });
 }
 
 function error(code, err = new Error()) {
   this.status(code).json({
-    status: "ERROR",
+    status: 'ERROR',
     data: {
       name: err.name,
       message: err.message,
