@@ -42,7 +42,7 @@ module.exports = {
           arrowParens: 'always',
         },
       ],
-      'no-unused-vars': ['error', { argsIgnorePattern: 'next' }],
+      'no-unused-vars': ['error', { argsIgnorePattern: 'next|Sequelize' }],
       'no-param-reassign': 'off',
     },
   };
