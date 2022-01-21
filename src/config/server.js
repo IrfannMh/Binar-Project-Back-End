@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const morgan = require('morgan');
 const { onLost, onError } = require('../plugins/errorHandler');
 const { ok, fail, error } = require('../plugins/responseBuilder');
