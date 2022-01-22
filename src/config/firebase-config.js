@@ -1,6 +1,16 @@
 const admin = require("firebase-admin");
 
-const { PROJECT_ID, PRIVATE_KEY_ID, PRIVATE_KEY, CLIENT_EMAIL, CLIENT_ID, AUTH_URI, TOKEN_URI, AUTH_PROVIDER_CERT_URL, CLIENT_CERT_URL } = process.env;
+const {
+  PROJECT_ID,
+  PRIVATE_KEY_ID,
+  PRIVATE_KEY,
+  CLIENT_EMAIL,
+  CLIENT_ID,
+  AUTH_URI,
+  TOKEN_URI,
+  AUTH_PROVIDER_CERT_URL,
+  CLIENT_CERT_URL,
+} = process.env;
 
 const serviceAccount = {
   type: "service_account",
