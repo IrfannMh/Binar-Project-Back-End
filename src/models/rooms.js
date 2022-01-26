@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       maxWinner: DataTypes.INTEGER,
       totalParticipant: DataTypes.INTEGER,
       totalProduct: DataTypes.INTEGER,
+      photoUrl: DataTypes.STRING
     },
     {
       sequelize,
