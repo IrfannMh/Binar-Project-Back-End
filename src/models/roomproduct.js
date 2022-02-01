@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.ProductCategory, {foreignKey: 'categoryId'})
+      this.hasMany(models.ProductPhoto, {foreignKey: 'productId'})
     }
   }
   RoomProduct.init({
@@ -25,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     roomId: DataTypes.UUID,
     categoryId: DataTypes.INTEGER,
-    photoUrl: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'RoomProduct',
