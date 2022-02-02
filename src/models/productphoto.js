@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   ProductPhoto.init({
     id: DataTypes.UUID,
     title: DataTypes.STRING,
+    alt: DataTypes.STRING,
     url: DataTypes.STRING,
     productId: DataTypes.UUID
   }, {
