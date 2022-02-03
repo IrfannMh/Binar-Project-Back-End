@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon index.js",
-    "lintfix": "eslint ./*.js --fix --cache",
+    "lintfix": "eslint ./src/ --fix --cache",
     "initdb": "npx sequelize-cli db:create",
     "dbMigrate": "npx sequelize-cli db:migrate",
     "dbSeed": "npx sequelize-cli db:seed:all"
