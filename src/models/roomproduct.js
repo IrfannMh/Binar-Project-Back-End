@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      this.belongsTo(models.Rooms, {foreignKey: 'roomId'})
       this.belongsTo(models.ProductCategory, {foreignKey: 'categoryId'})
     }
   }
@@ -25,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     roomId: DataTypes.UUID,
     categoryId: DataTypes.INTEGER,
-    photoUrl: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'RoomProduct',

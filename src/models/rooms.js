@@ -8,7 +8,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.User, { foreignKey: "ownerId", as: "roomOwner" });
+      this.belongsTo(models.User, { foreignKey: "ownerId" });
+
+      this.hasMany(models.RoomProduct, { foreignKey: "roomId" });
+
+      this.hasMany(models.UserRoom, { foreignKey: "roomId" });
+      // this.belongsToMany(models.User, {
+      //   foreignKey: "roomId",
+      //   through: "UserRooms"
+      // });
     }
   }
   Rooms.init(
@@ -27,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       maxWinner: DataTypes.INTEGER,
       totalParticipant: DataTypes.INTEGER,
       totalProduct: DataTypes.INTEGER,
-      photoUrl: DataTypes.STRING
+      photoUrl: DataTypes.STRING,
     },
     {
       sequelize,
