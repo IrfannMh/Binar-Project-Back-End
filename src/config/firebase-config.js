@@ -1,4 +1,4 @@
-const admin = require("firebase-admin");
+const admin = require('firebase-admin');
 
 const {
   PROJECT_ID,
@@ -13,7 +13,7 @@ const {
 } = process.env;
 
 const serviceAccount = {
-  type: "service_account",
+  type: 'service_account',
   project_id: PROJECT_ID,
   private_key_id: PRIVATE_KEY_ID,
   private_key: PRIVATE_KEY,
