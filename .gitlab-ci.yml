@@ -1,0 +1,19 @@
+# There are three stage on each pipeline. 
+# Test, build and deploy, which will be implemented
+# once the resource is ready.
+stages:
+  - test
+  - deploy
+
+# This job is being used to deploy this repository
+# to the Heroku Cloud Server. By using dpl gem.
+Deploy:
+  image: ruby:latest
+  stage: deploy
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_API_KEY
+  only:
+    - master
