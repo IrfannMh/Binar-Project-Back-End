@@ -7,6 +7,7 @@
   "author": "Ahmad Nizar <ahmad.rpl001@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "start": "node index.js",
     "dev": "nodemon index.js",
     "lintfix": "eslint ./src/ --fix --cache",
     "initdb": "npx sequelize-cli db:create",
