@@ -9,17 +9,17 @@ const getToken = (authorizationHeader = '') => {
 const authorize = asyncWrapper(async (req, res, next) => {
   try {
     const token = getToken(req.headers.authorization);
-
-    if (token) {
-      const user = await admin.auth().verifyIdToken(token);
-      req.userId = user.uid;
-      next();
+    console.log(token);
+    if (!token) {
+      return res.fail(403, {
+        name: 'FORBIDDEN',
+        message: 'You are not authenticated!',
+      });
     }
-
-    return res.fail(403, {
-      name: 'FORBIDDEN',
-      message: 'You are not authenticated!',
-    });
+    const user = await admin.auth().verifyIdToken(token);
+    req.userId = user.uid;
+    next();
+    
   } catch (err) {
     return res.fail(401, {
       name: 'UNAUTHORIZED',
