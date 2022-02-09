@@ -1,6 +1,6 @@
-const RoomView = require("../views/RoomsView");
-const asyncWrapper = require("../plugins/asyncWrapper");
-const { getAllRooms, verifyUser } = require("../services/RoomServices");
+const RoomView = require('../views/RoomsView');
+const asyncWrapper = require('../plugins/asyncWrapper');
+const { getAllRooms, verifyUser } = require('../services/RoomServices');
 
 exports.createRoom = asyncWrapper(async (req, res) => {
   const {
