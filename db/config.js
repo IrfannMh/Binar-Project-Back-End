@@ -1,3 +1,6 @@
+const dotenv = require('dotenv');
+
+dotenv.config();
 const {
   DATABASE_NAME = 'LepasAja',
   DATABASE_USERNAME = null,

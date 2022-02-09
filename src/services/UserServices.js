@@ -64,3 +64,85 @@ exports.findAdUser = async (user) => {
 
   return userDetail;
 };
+
+exports.getAllUser = async () => {
+  const users = await User.findAll({});
+  return users;
+};
+
+exports.getUser = async (req, res) => {
+  const user = await User.findOne({
+    where: {
+      id: req.params.id,
+    },
+    include: [{ model: UserAddress }, { model: UserDetail }],
+  });
+  return user;
+};
+
+exports.updateUserAddress = async (req, res) => {
+  const {
+    address,
+    street,
+    city,
+    province,
+    zipcode,
+  } = req.body;
+  await UserAddress.update(
+    {
+      address,
+      street,
+      city,
+      province,
+      zipcode,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  );
+}
+
+exports.updateUserDetail = async (req, res) => {
+  const {
+    photoUrl,
+    firstname,
+    lastname,
+    gender,
+    birthday,
+  } = req.body;
+
+  await UserDetail.update(
+    {
+      photoUrl,
+      firstname,
+      lastname,
+      gender,
+      birthday,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  );
+};
+
+exports.findDetail = async (req, res) => {
+  const detail = await UserDetail.findOne({
+    where: {
+      id: req.params.id,
+    },
+    include: [{model: UserAddress}],
+  });
+  return detail;
+}
+
+exports.deleteUser = async (req, res) => {
+  await User.destroy({
+    where: {
+      id: req.params.id,
+    },
+  });
+};
