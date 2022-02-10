@@ -4,6 +4,7 @@ const { createUUID } = require('./GlobalServices');
 const splitName = (name) => {
   const fullname = name.split(' ');
   let lastname = '';
+  // eslint-disable-next-line no-plusplus
   for (let i = 1; i < fullname.length; i++) {
     const str = fullname[i];
     lastname = lastname.concat(' ', str);
@@ -81,13 +82,7 @@ exports.getUser = async (req, res) => {
 };
 
 exports.updateUserAddress = async (req, res) => {
-  const {
-    address,
-    street,
-    city,
-    province,
-    zipcode,
-  } = req.body;
+  const { address, street, city, province, zipcode } = req.body;
   await UserAddress.update(
     {
       address,
@@ -98,20 +93,14 @@ exports.updateUserAddress = async (req, res) => {
     },
     {
       where: {
-        id: req.params.id,
+        userId: req.params.id,
       },
     }
   );
-}
+};
 
 exports.updateUserDetail = async (req, res) => {
-  const {
-    photoUrl,
-    firstname,
-    lastname,
-    gender,
-    birthday,
-  } = req.body;
+  const { photoUrl, firstname, lastname, gender, birthday } = req.body;
 
   await UserDetail.update(
     {
@@ -123,21 +112,21 @@ exports.updateUserDetail = async (req, res) => {
     },
     {
       where: {
-        id: req.params.id,
+        userId: req.params.id,
       },
     }
   );
 };
 
 exports.findDetail = async (req, res) => {
-  const detail = await UserDetail.findOne({
+  const detail = await User.findOne({
     where: {
       id: req.params.id,
     },
-    include: [{model: UserAddress}],
+    include: [{ model: UserAddress }, { model: UserDetail }],
   });
   return detail;
-}
+};
 
 exports.deleteUser = async (req, res) => {
   await User.destroy({

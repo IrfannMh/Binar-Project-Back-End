@@ -51,7 +51,6 @@ exports.handleGetUser = asyncWrapper(async (req, res) => {
 
 exports.handleUpdateUser = asyncWrapper(async (req, res) => {
   const user = await getUser(req, res);
-  console.log(user);
   if (!user) {
     return res.fail(404, {
       name: 'Not Found',
@@ -60,7 +59,7 @@ exports.handleUpdateUser = asyncWrapper(async (req, res) => {
   }
   await updateUserDetail(req, res);
   await updateUserAddress(req, res);
-  const update = new UserView (await findDetail(req,res));
+  const update = new UserView(await findDetail(req, res));
   return res.ok(200, update);
 });
 
