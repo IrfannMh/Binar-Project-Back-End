@@ -6,11 +6,11 @@ exports.getAllRooms = async () =>
       {
         model: RoomProduct,
       },
-      { model: UserRoom }
+      { model: UserRoom },
     ],
   });
 
-  exports.verifyUser = async ({uid}) =>{
-    const user = await User.findByPk(uid)
-    return user
-  }
+exports.verifyUser = async ({ uid }) => {
+  const user = await User.findByPk(uid);
+  return user;
+};

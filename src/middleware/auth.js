@@ -6,20 +6,30 @@ const getToken = (authorizationHeader = '') => {
   return splittedHeader;
 };
 
+const userInfo = (user) => {
+  const {
+    name = '',
+    picture = '',
+    uid = '',
+    email = '',
+    email_verified = false,
+  } = user;
+
+  return { name, picture, uid, email, email_verified };
+};
+
 const authorize = asyncWrapper(async (req, res, next) => {
   try {
     const token = getToken(req.headers.authorization);
-    console.log(token);
     if (!token) {
       return res.fail(403, {
         name: 'FORBIDDEN',
         message: 'You are not authenticated!',
       });
     }
-    const user = await admin.auth().verifyIdToken(token);
-    req.userId = user.uid;
+    const user = userInfo(await admin.auth().verifyIdToken(token));
+    req.user = user;
     next();
-    
   } catch (err) {
     return res.fail(401, {
       name: 'UNAUTHORIZED',

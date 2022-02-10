@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('UserAddresses', {
@@ -6,43 +5,44 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4
+        defaultValue: Sequelize.UUIDV4,
       },
       address: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       street: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       city: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       province: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       zipCode: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       userId: {
         type: Sequelize.STRING,
-        references:{
-          model:{
-            tableName: "Users"
+        onDelete: 'CASCADE',
+        references: {
+          model: {
+            tableName: 'Users',
           },
-          key: "id"
-        }
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('UserAddresses');
-  }
+  },
 };
