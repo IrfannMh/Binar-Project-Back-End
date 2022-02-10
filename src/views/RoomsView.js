@@ -1,28 +1,26 @@
-const { getTimestamp } = require('../services/GlobalServices');
+const { getTimestamp } = require("../services/GlobalServices");
 
 class RoomView {
   constructor({
     id,
     name,
-    photoUrl,
-    location,
     startAt,
     finishAt,
     isOpen,
     RoomProducts,
     UserRooms,
+    User,
     createdAt,
     updatedAt,
   }) {
     this.id = id;
     this.name = name;
-    this.photoUrl = photoUrl;
-    this.location = location;
     this.startAt = startAt;
     this.finishAt = finishAt;
     this.isOpen = isOpen;
     this.RoomProducts = RoomProducts;
     this.UserRooms = UserRooms;
+    this.User = User;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -31,13 +29,13 @@ class RoomView {
     return {
       id: this.id,
       name: this.name,
-      photoUrl: this.photoUrl,
+      photoUrl: this.RoomProducts[0]?.ProductPhotos[0].url || "",
       startAt: getTimestamp(this.startAt),
       finishAt: getTimestamp(this.finishAt),
+      location: this.User.UserAddress.province,
       isOpen: this.isOpen,
       totalParticipants: this.UserRooms.length,
       totalProducts: this.RoomProducts.length,
-      location: this.location,
       products: this.products,
       createdAt: getTimestamp(this.createdAt),
       updatedAt: getTimestamp(this.updatedAt),

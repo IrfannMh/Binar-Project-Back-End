@@ -1,12 +1,21 @@
-const { Rooms, RoomProduct, UserRoom, User } = require('../models');
+const {
+  Rooms,
+  RoomProduct,
+  UserRoom,
+  User,
+  UserAddress,
+  ProductPhoto,
+} = require("../models");
 
 exports.getAllRooms = async () =>
   Rooms.findAll({
     include: [
       {
         model: RoomProduct,
+        include: { model: ProductPhoto },
       },
       { model: UserRoom },
+      { model: User, include: { model: UserAddress } },
     ],
   });
 
