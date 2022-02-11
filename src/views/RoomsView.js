@@ -1,4 +1,4 @@
-const { getTimestamp } = require("../services/GlobalServices");
+const { getTimestamp } = require('../services/GlobalServices');
 
 class RoomView {
   constructor({
@@ -29,7 +29,7 @@ class RoomView {
     return {
       id: this.id,
       name: this.name,
-      photoUrl: this.RoomProducts[0]?.ProductPhotos[0].url || "",
+      photoUrl: this.RoomProducts[0]?.ProductPhotos[0].url || '',
       startAt: getTimestamp(this.startAt),
       finishAt: getTimestamp(this.finishAt),
       location: this.User.UserAddress.province,
