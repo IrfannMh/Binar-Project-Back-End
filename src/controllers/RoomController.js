@@ -12,9 +12,9 @@ const {
   REQURIED_FIELD,
   NOT_FOUND,
   ALREADY_JOIN,
-  NOT_ROOM_PARTICIPANT,
   NOT_FOUND_USER,
-  LEFT_FROM_ROOM,
+  LEFT_THE_ROOM,
+  JOIN_THE_ROOM,
 } = require('../utils/constants');
 const RoomDetailView = require('../views/RoomDetailView');
 
@@ -99,7 +99,10 @@ exports.joinAnRoom = asyncWrapper(async (req, res) => {
     });
   }
 
-  return res.ok(201, userRoom);
+  return res.ok(201, {
+    name: JOIN_THE_ROOM,
+    message: 'You have join the room!',
+  });
 });
 
 exports.leaveFromRoom = asyncWrapper(async (req, res) => {
@@ -123,7 +126,7 @@ exports.leaveFromRoom = asyncWrapper(async (req, res) => {
   }
 
   return res.ok(200, {
-    name: LEFT_FROM_ROOM,
+    name: LEFT_THE_ROOM,
     message: 'You have left the room',
   });
 });
