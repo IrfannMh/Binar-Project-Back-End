@@ -8,10 +8,28 @@ const {
   UserDetail,
   ProductCategory,
 } = require('../models');
-const { REQURIED_FIELD, NOT_FOUND } = require('../utils/constants');
+const {
+  REQURIED_FIELD,
+  NOT_FOUND,
+  ALREADY_JOIN,
+} = require('../utils/constants');
 const { getStandartDate } = require('../utils/time');
 const { checkValidUUID } = require('../utils/uuid');
 const { createUUID } = require('./GlobalServices');
+
+const isUserJoined = async ({ roomId, userId }) => {
+  const user = await UserRoom.findOne({
+    where: { roomId, participantId: userId },
+  });
+
+  if (user) return true;
+};
+
+const findRoom = async (id) => {
+  const room = await Rooms.findByPk(id);
+
+  if (room) return true;
+};
 
 exports.createNewRoom = async ({ reqBody, uid }) => {
   const {
@@ -114,8 +132,21 @@ exports.editDetailRoom = async ({ reqBody, roomId }) => {
   return room;
 };
 
-const findRoom = async (id) => {
-  const room = await Rooms.findByPk(id);
+exports.addUserToRoom = async ({ roomId, userId }) => {
+  if (!checkValidUUID(roomId)) return NOT_FOUND;
 
-  if (room) return true;
+  const checkRoom = await findRoom(roomId);
+  if (!checkRoom) return NOT_FOUND;
+
+  const checkUser = await isUserJoined({ roomId, userId });
+  if (checkUser) return ALREADY_JOIN;
+
+  const userRoom = await UserRoom.create({
+    id: createUUID(),
+    isWinner: false,
+    roomId,
+    participantId: userId,
+  });
+
+  return userRoom;
 };

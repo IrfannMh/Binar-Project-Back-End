@@ -5,8 +5,13 @@ const {
   createNewRoom,
   getDetailedRoom,
   editDetailRoom,
+  addUserToRoom,
 } = require('../services/RoomServices');
-const { REQURIED_FIELD, NOT_FOUND } = require('../utils/constants');
+const {
+  REQURIED_FIELD,
+  NOT_FOUND,
+  ALREADY_JOIN,
+} = require('../utils/constants');
 const RoomDetailView = require('../views/RoomDetailView');
 
 exports.createRoom = asyncWrapper(async (req, res) => {
@@ -68,4 +73,27 @@ exports.updateRoom = asyncWrapper(async (req, res) => {
 
   const response = new RoomDetailView(await getDetailedRoom(req.params.id));
   return res.ok(201, response);
+});
+
+exports.joinAnRoom = asyncWrapper(async (req, res) => {
+  const userRoom = await addUserToRoom({
+    roomId: req.params.id,
+    userId: req.user.uid,
+  });
+
+  if (userRoom === NOT_FOUND) {
+    return res.fail(400, {
+      name: NOT_FOUND,
+      message: 'Pleace check roomId, room not found!',
+    });
+  }
+
+  if (userRoom === ALREADY_JOIN) {
+    return res.fail(400, {
+      name: ALREADY_JOIN,
+      message: 'You have joined the room!',
+    });
+  }
+
+  return res.ok(201, userRoom);
 });
