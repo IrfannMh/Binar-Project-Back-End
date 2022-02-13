@@ -12,6 +12,7 @@ const {
   REQURIED_FIELD,
   NOT_FOUND,
   ALREADY_JOIN,
+  NOT_FOUND_USER,
 } = require('../utils/constants');
 const { getStandartDate } = require('../utils/time');
 const { checkValidUUID } = require('../utils/uuid');
@@ -146,6 +147,25 @@ exports.addUserToRoom = async ({ roomId, userId }) => {
     isWinner: false,
     roomId,
     participantId: userId,
+  });
+
+  return userRoom;
+};
+
+exports.removeUserFromRoom = async ({ roomId, userId }) => {
+  if (!checkValidUUID(roomId)) return NOT_FOUND;
+
+  const checkRoom = await findRoom(roomId);
+  if (!checkRoom) return NOT_FOUND;
+
+  const checkUser = await isUserJoined({ roomId, userId });
+  if (!checkUser) return NOT_FOUND_USER;
+
+  const userRoom = await UserRoom.destroy({
+    where: {
+      roomId,
+      participantId: userId,
+    },
   });
 
   return userRoom;

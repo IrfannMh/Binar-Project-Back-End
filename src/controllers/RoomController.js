@@ -6,11 +6,15 @@ const {
   getDetailedRoom,
   editDetailRoom,
   addUserToRoom,
+  removeUserFromRoom,
 } = require('../services/RoomServices');
 const {
   REQURIED_FIELD,
   NOT_FOUND,
   ALREADY_JOIN,
+  NOT_ROOM_PARTICIPANT,
+  NOT_FOUND_USER,
+  LEFT_FROM_ROOM,
 } = require('../utils/constants');
 const RoomDetailView = require('../views/RoomDetailView');
 
@@ -96,4 +100,30 @@ exports.joinAnRoom = asyncWrapper(async (req, res) => {
   }
 
   return res.ok(201, userRoom);
+});
+
+exports.leaveFromRoom = asyncWrapper(async (req, res) => {
+  const userRoom = await removeUserFromRoom({
+    roomId: req.params.id,
+    userId: req.user.uid,
+  });
+
+  if (userRoom === NOT_FOUND) {
+    return res.fail(400, {
+      name: NOT_FOUND,
+      message: 'Pleace check roomId, room not found!',
+    });
+  }
+
+  if (userRoom === NOT_FOUND_USER) {
+    return res.fail(400, {
+      name: NOT_FOUND_USER,
+      message: 'You are not a room participant!',
+    });
+  }
+
+  return res.ok(200, {
+    name: LEFT_FROM_ROOM,
+    message: 'You have left the room',
+  });
 });
