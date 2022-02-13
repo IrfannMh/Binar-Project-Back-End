@@ -3,9 +3,10 @@ const asyncWrapper = require('../plugins/asyncWrapper');
 const {
   getAllRooms,
   createNewRoom,
-  getDetailedRooms,
+  getDetailedRoom,
+  editDetailRoom,
 } = require('../services/RoomServices');
-const { REQURIED_FIELD } = require('../utils/constants');
+const { REQURIED_FIELD, NOT_FOUND } = require('../utils/constants');
 const RoomDetailView = require('../views/RoomDetailView');
 
 exports.createRoom = asyncWrapper(async (req, res) => {
@@ -18,7 +19,7 @@ exports.createRoom = asyncWrapper(async (req, res) => {
     });
   }
 
-  const response = new RoomDetailView(await getDetailedRooms(room.id));
+  const response = new RoomDetailView(await getDetailedRoom(room.id));
   return res.ok(201, response);
 });
 
@@ -28,4 +29,43 @@ exports.getRooms = asyncWrapper(async (req, res) => {
   const response = rooms.map((room) => new RoomView(room));
 
   return res.ok(200, response);
+});
+
+exports.getARoom = asyncWrapper(async (req, res) => {
+  const room = await getDetailedRoom(req.params.id);
+
+  if (room === NOT_FOUND) {
+    return res.fail(400, {
+      name: NOT_FOUND,
+      message: 'Pleace check roomId, room not found!',
+    });
+  }
+
+  const response = new RoomDetailView(room);
+
+  return res.ok(200, response);
+});
+
+exports.updateRoom = asyncWrapper(async (req, res) => {
+  const room = await editDetailRoom({
+    reqBody: req.body,
+    roomId: req.params.id,
+  });
+
+  if (room === REQURIED_FIELD) {
+    return res.fail(400, {
+      name: REQURIED_FIELD,
+      message: 'Pleace check requried field',
+    });
+  }
+
+  if (room === NOT_FOUND) {
+    return res.fail(400, {
+      name: NOT_FOUND,
+      message: 'Pleace check roomId, room not found!',
+    });
+  }
+
+  const response = new RoomDetailView(await getDetailedRoom(req.params.id));
+  return res.ok(201, response);
 });

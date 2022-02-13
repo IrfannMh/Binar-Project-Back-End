@@ -1,1 +1,2 @@
 exports.REQURIED_FIELD = 'REQURIED_FIELD';
+exports.NOT_FOUND = 'NOT_FOUND';
