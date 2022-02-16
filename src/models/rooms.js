@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       startAt: DataTypes.DATE,
       finishAt: DataTypes.DATE,
       description: DataTypes.TEXT,
+      condition: DataTypes.TEXT,
       ownerId: DataTypes.STRING,
       isOpen: DataTypes.BOOLEAN,
       maxWinner: DataTypes.INTEGER,
