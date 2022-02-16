@@ -13,6 +13,7 @@ const {
   updateRoom,
   joinAnRoom,
   leaveFromRoom,
+  findWinners,
 } = require('./controllers/RoomController');
 const {
   registerAnUser,
@@ -60,7 +61,7 @@ module.exports = (router) => {
   router.delete('/api/v1/rooms/:id', authorize, getRooms);
   router.post('/api/v1/rooms/:id/join', authorize, joinAnRoom);
   router.post('/api/v1/rooms/:id/leave', authorize, leaveFromRoom);
-  router.post('/api/v1/rooms/:id/find_winner', authorize, getRooms);
+  router.post('/api/v1/rooms/:id/find_winner', authorize, findWinners);
 
   return router;
 };

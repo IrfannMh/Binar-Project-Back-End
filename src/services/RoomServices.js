@@ -13,6 +13,8 @@ const {
   NOT_FOUND,
   ALREADY_JOIN,
   NOT_FOUND_USER,
+  NULL_PARTICIPANT,
+  ROOM_IS_CLOSED,
 } = require('../utils/constants');
 const { getStandartDate } = require('../utils/time');
 const { checkValidUUID } = require('../utils/uuid');
@@ -169,4 +171,63 @@ exports.removeUserFromRoom = async ({ roomId, userId }) => {
   });
 
   return userRoom;
+};
+
+const getWinnerId = (participants) => {
+  const newParticipant = participants.map((participant, index) => ({
+    seatNumber: index,
+    participantId: participant.participantId,
+  }));
+
+  const rundomNumber = Math.round(Math.random() * (newParticipant.length - 1));
+
+  const theWinner = newParticipant.find(
+    (participant) => participant.seatNumber === rundomNumber
+  );
+
+  return theWinner.participantId;
+};
+
+const changeWinnerStatus = async (winnerId) => {
+  const userRoom = await UserRoom.update(
+    { isWinner: true },
+    { where: { participantId: winnerId } }
+  );
+  return userRoom;
+};
+
+const changeRoomStatus = async (roomId) => {
+  const room = await Rooms.update({ isOpen: false }, { where: { id: roomId } });
+  return room;
+};
+
+const checkRoomStatus = async (roomId) => {
+  const room = await Rooms.findByPk(roomId);
+  return room.isOpen;
+};
+
+const getDetailWinner = async (roomId, winnerId) => {
+  const detail = await UserRoom.findOne({
+    where: { roomId, participantId: winnerId },
+    include: [{ model: Rooms }, { model: User, include: UserDetail }],
+  });
+
+  return detail;
+};
+
+exports.findTheWinner = async (roomId) => {
+  const userRoom = await UserRoom.findAll({ where: { roomId } });
+
+  if (userRoom.length < 1) return NULL_PARTICIPANT;
+
+  const isRoomOpen = await checkRoomStatus(roomId);
+
+  if (!isRoomOpen) return ROOM_IS_CLOSED;
+
+  const winnerId = getWinnerId(userRoom);
+  await changeWinnerStatus(winnerId);
+  await changeRoomStatus(roomId);
+
+  const detailWinner = await getDetailWinner(roomId, winnerId);
+  return detailWinner;
 };
