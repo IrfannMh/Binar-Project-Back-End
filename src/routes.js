@@ -5,25 +5,6 @@ const { getRoomProducts, getProducts, createRoomProducts, addProductPhoto, updat
 const { handleGetAllProductCategories, handleGetProductCategories, handleUpdateProductCategories, handleDeleteProductCategories, handlePostProductCategories } = require("./controllers/ProductCategoriesController");
 
 const authorize = require("./middleware/auth");
-const { handleGetRoot } = require('./controllers/MainController');
-const {
-  getRooms,
-  createRoom,
-  getARoom,
-  updateRoom,
-  joinAnRoom,
-  leaveFromRoom,
-  findWinners,
-  deleteRoom,
-} = require('./controllers/RoomController');
-const {
-  registerAnUser,
-  handleGetAllUser,
-  handleGetUser,
-  handleUpdateUser,
-  handleDeleteUser,
-} = require('./controllers/UserController');
-const authorize = require('./middleware/auth');
 
 module.exports = (router) => {
   router.get("/", handleGetRoot);
@@ -55,14 +36,6 @@ module.exports = (router) => {
   router.put("/api/v1/categories/:id", authorize, handleUpdateProductCategories);
   router.delete("/api/v1/categories/:id", authorize, handleDeleteProductCategories);
   router.post("/api/v1/categories", authorize, handlePostProductCategories);
-  router.post('/api/v1/rooms', authorize, createRoom);
-  router.get('/api/v1/rooms', getRooms);
-  router.get('/api/v1/rooms/:id', getARoom);
-  router.put('/api/v1/rooms/:id', authorize, updateRoom);
-  router.delete('/api/v1/rooms/:id', authorize, deleteRoom);
-  router.post('/api/v1/rooms/:id/join', authorize, joinAnRoom);
-  router.post('/api/v1/rooms/:id/leave', authorize, leaveFromRoom);
-  router.post('/api/v1/rooms/:id/find_winner', authorize, findWinners);
 
   return router;
 };

@@ -1,52 +1,44 @@
-"use strict";
+'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("RoomProducts", {
+    await queryInterface.createTable('RoomProducts', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        defaultValue: Sequelize.UUIDV4
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
       qty: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       description: {
-        type: Sequelize.TEXT,
+        type: Sequelize.TEXT
       },
       roomId: {
-        type: Sequelize.UUID,
-        onDelete: "CASCADE",
-        references: {
-          model: {
-            tableName: "Rooms",
-          },
-          key: "id",
-        },
+        type: Sequelize.UUID
       },
       categoryId: {
         type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: "ProductCategories",
-          },
-          key: "id",
-        },
+        references:{
+          model:{
+            tableName: 'ProductCategories'
+          }, key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
+        type: Sequelize.DATE
+      }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("RoomProducts");
-  },
+    await queryInterface.dropTable('RoomProducts');
+  }
 };
