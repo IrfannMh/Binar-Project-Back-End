@@ -14,6 +14,7 @@ const {
   joinAnRoom,
   leaveFromRoom,
   findWinners,
+  deleteRoom,
 } = require('./controllers/RoomController');
 const {
   registerAnUser,
@@ -58,7 +59,7 @@ module.exports = (router) => {
   router.get('/api/v1/rooms', getRooms);
   router.get('/api/v1/rooms/:id', getARoom);
   router.put('/api/v1/rooms/:id', authorize, updateRoom);
-  router.delete('/api/v1/rooms/:id', authorize, getRooms);
+  router.delete('/api/v1/rooms/:id', authorize, deleteRoom);
   router.post('/api/v1/rooms/:id/join', authorize, joinAnRoom);
   router.post('/api/v1/rooms/:id/leave', authorize, leaveFromRoom);
   router.post('/api/v1/rooms/:id/find_winner', authorize, findWinners);

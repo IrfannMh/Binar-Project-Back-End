@@ -135,6 +135,22 @@ exports.editDetailRoom = async ({ reqBody, roomId }) => {
   return room;
 };
 
+exports.deleteRoomById = async ({ roomId }) => {
+  if (!checkValidUUID(roomId)) return NOT_FOUND;
+
+  const checkRoom = await findRoom(roomId);
+
+  if (!checkRoom) return NOT_FOUND;
+
+  const room = await Rooms.destroy({
+    where: {
+      id: roomId,
+    },
+  });
+
+  return room;
+};
+
 exports.addUserToRoom = async ({ roomId, userId }) => {
   if (!checkValidUUID(roomId)) return NOT_FOUND;
 

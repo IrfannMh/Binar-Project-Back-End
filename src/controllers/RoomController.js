@@ -8,6 +8,7 @@ const {
   addUserToRoom,
   removeUserFromRoom,
   findTheWinner,
+  deleteRoomById,
 } = require('../services/RoomServices');
 const {
   REQURIED_FIELD,
@@ -154,4 +155,17 @@ exports.findWinners = asyncWrapper(async (req, res) => {
 
   const response = new WinnerView(winners);
   return res.ok(200, response);
+});
+
+exports.deleteRoom = asyncWrapper(async (req, res) => {
+  const room = await deleteRoomById({ roomId: req.params.id });
+
+  if (room === NOT_FOUND) {
+    return res.fail(400, {
+      name: NOT_FOUND,
+      message: 'Pleace check roomId, room not found!',
+    });
+  }
+
+  return res.ok(200, {});
 });
