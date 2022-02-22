@@ -1,13 +1,23 @@
-const RoomProductsView = require("../views/RoomProductsView");
-const ProductView = require("../views/ProductView");
-const asyncWrapper = require("../plugins/asyncWrapper");
-const { findProduct, findProductNew, addRoomProducts, findCategory, checkProductField, getAllRoomProducts, addProductsPhoto, updateTableProduct, deleteTableProduct } = require("../services/RoomProductServices");
+const RoomProductsView = require('../views/RoomProductsView');
+const ProductView = require('../views/ProductView');
+const asyncWrapper = require('../plugins/asyncWrapper');
+const {
+  findProduct,
+  findProductNew,
+  addRoomProducts,
+  findCategory,
+  checkProductField,
+  getAllRoomProducts,
+  addProductsPhoto,
+  updateTableProduct,
+  deleteTableProduct,
+} = require('../services/RoomProductServices');
 
 exports.createRoomProducts = asyncWrapper(async (req, res) => {
   if (await checkProductField(req, res)) {
     return res.fail(400, {
-      name: "REQUIRED_FIELD",
-      message: "Please check required fields",
+      name: 'REQUIRED_FIELD',
+      message: 'Please check required fields',
     });
   }
 
@@ -31,7 +41,7 @@ exports.getProducts = asyncWrapper(async (req, res) => {
 
   if (!roomproducts) {
     return res.fail(404, {
-      name: "Not Found",
+      name: 'Not Found',
       message: null,
     });
   }
@@ -47,17 +57,17 @@ exports.addProductPhoto = asyncWrapper(async (req, res) => {
 
 exports.updateProduct = asyncWrapper(async (req, res) => {
   const product = await findProduct(req, res);
-  console.log("product", product);
+  console.log('product', product);
   if (!product) {
     return res.fail(404, {
-      name: "Not Found",
-      message: "Product not exist",
+      name: 'Not Found',
+      message: 'Product not exist',
     });
   }
 
   const category = await findCategory(req);
 
-  console.log("id category", category);
+  console.log('id category', category);
   await updateTableProduct(req, category);
 
   const updatedProduct = new ProductView(await findProduct(req, res));
@@ -68,8 +78,8 @@ exports.deleteProduct = asyncWrapper(async (req, res) => {
   const product = await findProduct(req, res);
   if (!product) {
     return res.fail(404, {
-      name: "Not Found",
-      message: "Product not exist",
+      name: 'Not Found',
+      message: 'Product not exist',
     });
   }
 
