@@ -49,7 +49,7 @@ exports.getARoom = asyncWrapper(async (req, res) => {
   const room = await getDetailedRoom(req.params.id);
 
   if (room === NOT_FOUND) {
-    return res.fail(400, {
+    return res.fail(404, {
       name: NOT_FOUND,
       message: 'Pleace check roomId, room not found!',
     });
@@ -74,7 +74,7 @@ exports.updateRoom = asyncWrapper(async (req, res) => {
   }
 
   if (room === NOT_FOUND) {
-    return res.fail(400, {
+    return res.fail(404, {
       name: NOT_FOUND,
       message: 'Pleace check roomId, room not found!',
     });
@@ -91,7 +91,7 @@ exports.joinAnRoom = asyncWrapper(async (req, res) => {
   });
 
   if (userRoom === NOT_FOUND) {
-    return res.fail(400, {
+    return res.fail(404, {
       name: NOT_FOUND,
       message: 'Pleace check roomId, room not found!',
     });
@@ -117,14 +117,14 @@ exports.leaveFromRoom = asyncWrapper(async (req, res) => {
   });
 
   if (userRoom === NOT_FOUND) {
-    return res.fail(400, {
+    return res.fail(404, {
       name: NOT_FOUND,
       message: 'Pleace check roomId, room not found!',
     });
   }
 
   if (userRoom === NOT_FOUND_USER) {
-    return res.fail(400, {
+    return res.fail(404, {
       name: NOT_FOUND_USER,
       message: 'You are not a room participant!',
     });
