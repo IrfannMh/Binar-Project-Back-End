@@ -91,7 +91,7 @@ exports.getDetailedRoom = async (roomId) => {
         include: [{ model: ProductPhoto }, { model: ProductCategory }],
       },
       { model: UserRoom, include: [{ model: User, include: UserDetail }] },
-      { model: User, include: UserDetail },
+      { model: User, include: [{ model: UserDetail }, { model: UserAddress }] },
     ],
   });
 
