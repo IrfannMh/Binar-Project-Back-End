@@ -34,6 +34,7 @@ const {
   deleteRoom,
 } = require('./controllers/RoomController');
 const { verifyRoomOwner } = require('./middleware/room');
+const { verifyUser } = require('./middleware/user');
 
 module.exports = (router) => {
   router.get('/', handleGetRoot);
@@ -44,37 +45,67 @@ module.exports = (router) => {
   router.put('/api/v1/users/:id', authenticate, handleUpdateUser);
   router.delete('/api/v1/users/:id', authenticate, handleDeleteUser);
 
-  router.post('/api/v1/products', authenticate, createRoomProducts);
+  router.post('/api/v1/products', authenticate, verifyUser, createRoomProducts);
   router.get('/api/v1/products', getRoomProducts);
   router.get('/api/v1/products/:id', getProducts);
-  router.post('/api/v1/products/:id/photos', authenticate, addProductPhoto);
-  router.put('/api/v1/products/:id', authenticate, updateProduct);
-  router.delete('/api/v1/products/:id', authenticate, deleteProduct);
+  router.post(
+    '/api/v1/products/:id/photos',
+    authenticate,
+    verifyUser,
+    addProductPhoto
+  );
+  router.put('/api/v1/products/:id', authenticate, verifyUser, updateProduct);
+  router.delete(
+    '/api/v1/products/:id',
+    authenticate,
+    verifyUser,
+    deleteProduct
+  );
 
   router.get('/api/v1/categories', handleGetAllProductCategories);
   router.get('/api/v1/categories/:id', handleGetProductCategories);
   router.put(
     '/api/v1/categories/:id',
     authenticate,
+    verifyUser,
     handleUpdateProductCategories
   );
   router.delete(
     '/api/v1/categories/:id',
     authenticate,
+    verifyUser,
     handleDeleteProductCategories
   );
   router.post('/api/v1/categories', authenticate, handlePostProductCategories);
 
-  router.post('/api/v1/rooms', authenticate, createRoom);
+  router.post('/api/v1/rooms', authenticate, verifyUser, createRoom);
   router.get('/api/v1/rooms', getRooms);
   router.get('/api/v1/rooms/:id', getARoom);
-  router.put('/api/v1/rooms/:id', authenticate, verifyRoomOwner, updateRoom);
-  router.delete('/api/v1/rooms/:id', authenticate, verifyRoomOwner, deleteRoom);
-  router.post('/api/v1/rooms/:id/join', authenticate, joinAnRoom);
-  router.post('/api/v1/rooms/:id/leave', authenticate, leaveFromRoom);
+  router.put(
+    '/api/v1/rooms/:id',
+    authenticate,
+    verifyUser,
+    verifyRoomOwner,
+    updateRoom
+  );
+  router.delete(
+    '/api/v1/rooms/:id',
+    authenticate,
+    verifyUser,
+    verifyRoomOwner,
+    deleteRoom
+  );
+  router.post('/api/v1/rooms/:id/join', authenticate, verifyUser, joinAnRoom);
+  router.post(
+    '/api/v1/rooms/:id/leave',
+    authenticate,
+    verifyUser,
+    leaveFromRoom
+  );
   router.get(
     '/api/v1/rooms/:id/find_winner',
     authenticate,
+    verifyUser,
     verifyRoomOwner,
     findWinners
   );
