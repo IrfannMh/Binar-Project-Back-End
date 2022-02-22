@@ -1,4 +1,11 @@
-const { RoomProduct, Rooms, ProductPhoto, ProductCategory, User, UserAddress } = require("../models");
+const {
+  RoomProduct,
+  Rooms,
+  ProductPhoto,
+  ProductCategory,
+  User,
+  UserAddress,
+} = require('../models');
 
 exports.checkProductField = async (req, res) => {
   const { name, qty, description } = req.body;
@@ -36,7 +43,11 @@ exports.findProduct = async (req, res) => {
     where: {
       id: req.params.id,
     },
-    include: [{ model: Rooms }, { model: ProductPhoto }, { model: ProductCategory }],
+    include: [
+      { model: Rooms },
+      { model: ProductPhoto },
+      { model: ProductCategory },
+    ],
   });
   return product;
 };
@@ -46,14 +57,22 @@ exports.findProductNew = async (newProduct) => {
     where: {
       id: newProduct.id,
     },
-    include: [{ model: Rooms }, { model: ProductPhoto }, { model: ProductCategory }],
+    include: [
+      { model: Rooms },
+      { model: ProductPhoto },
+      { model: ProductCategory },
+    ],
   });
   return product;
 };
 
 exports.getAllRoomProducts = async () => {
   const roomproducts = await RoomProduct.findAll({
-    include: [{ model: ProductPhoto }, { model: ProductCategory }, { model: Rooms, include: [{ model: User, include: UserAddress }] }],
+    include: [
+      { model: ProductPhoto },
+      { model: ProductCategory },
+      { model: Rooms, include: [{ model: User, include: UserAddress }] },
+    ],
   });
   return roomproducts;
 };

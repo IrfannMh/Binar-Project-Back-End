@@ -1,7 +1,18 @@
-const { getTimestamp } = require("../services/GlobalServices");
+const { getTimestamp } = require('../services/GlobalServices');
 
 class RoomProductsView {
-  constructor({ id, roomId, name, qty, Room, ProductCategory, description, createdAt, updatedAt, ProductPhotos }) {
+  constructor({
+    id,
+    roomId,
+    name,
+    qty,
+    Room,
+    ProductCategory,
+    description,
+    createdAt,
+    updatedAt,
+    ProductPhotos,
+  }) {
     this.id = id;
     this.roomId = roomId;
     this.name = name;

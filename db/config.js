@@ -15,6 +15,7 @@ module.exports = {
     database: `${DATABASE_NAME}_development`,
     host: DATABASE_HOST,
     dialect: 'postgres',
+    logging: false,
   },
   test: {
     username: DATABASE_USERNAME,
