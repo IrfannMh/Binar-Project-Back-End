@@ -1,3 +1,4 @@
+const { DEFAULT_IMAGE_FOR_GIVEAWAY } = require('../data/image');
 const { getTimestamp } = require('../services/GlobalServices');
 
 class RoomView {
@@ -29,10 +30,13 @@ class RoomView {
     return {
       id: this.id,
       name: this.name,
-      photoUrl: this.RoomProducts[0]?.ProductPhotos[0].url || '',
+      owner: this.User?.UserDetail?.displayName,
+      photoUrl:
+        this.RoomProducts[0]?.ProductPhotos[0].url ||
+        DEFAULT_IMAGE_FOR_GIVEAWAY,
       startAt: getTimestamp(this.startAt),
       finishAt: getTimestamp(this.finishAt),
-      location: this.User.UserAddress.province,
+      location: this.User.UserAddress?.province,
       isOpen: this.isOpen,
       totalParticipants: this.UserRooms.length,
       totalProducts: this.RoomProducts.length,
