@@ -64,7 +64,7 @@ class RoomDetailView {
       id: this.id,
       owner: this.User?.UserDetail?.displayName,
       name: this.name,
-      photoUrl: this.RoomProducts[0]?.ProductPhotos[0].url || DEFAULT_IMAGE_FOR_GIVEAWAY,
+      photoUrl: this.RoomProducts[0]?.ProductPhotos[0]?.url || DEFAULT_IMAGE_FOR_GIVEAWAY,
       location:this.User.UserAddress?.province || "",
       startAt: getTimestamp(this.startAt),
       finishAt: getTimestamp(this.finishAt),
