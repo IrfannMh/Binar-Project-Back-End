@@ -48,6 +48,11 @@ exports.addUserAddress = async (user) => {
   const { uid } = user;
   const newUserAddress = await UserAddress.create({
     id: createUUID(),
+    address: '',
+    street: '',
+    city: '',
+    province: '',
+    zipcode: 0,
     userId: uid,
   });
 
