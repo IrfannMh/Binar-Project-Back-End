@@ -9,12 +9,15 @@ module.exports = {
       },
       displayName: {
         type: Sequelize.STRING,
+        defaultValue: '',
       },
       firstname: {
         type: Sequelize.STRING,
+        defaultValue: '',
       },
       lastname: {
         type: Sequelize.STRING,
+        defaultValue: '',
       },
       gender: {
         type: Sequelize.ENUM('LAKI_LAKI', 'PEREMPUAN'),
@@ -24,9 +27,11 @@ module.exports = {
       },
       address: {
         type: Sequelize.TEXT,
+        defaultValue: '',
       },
       phoneNumber: {
         type: Sequelize.STRING,
+        defaultValue: '',
       },
       userId: {
         type: Sequelize.STRING,

@@ -9,18 +9,23 @@ module.exports = {
       },
       address: {
         type: Sequelize.TEXT,
+        defaultValue: '',
       },
       street: {
         type: Sequelize.TEXT,
+        defaultValue: '',
       },
       city: {
         type: Sequelize.STRING,
+        defaultValue: '',
       },
       province: {
         type: Sequelize.STRING,
+        defaultValue: '',
       },
       zipCode: {
         type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       userId: {
         type: Sequelize.STRING,
