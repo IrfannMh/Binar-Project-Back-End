@@ -32,7 +32,7 @@ class RoomView {
       name: this.name,
       owner: this.User?.UserDetail?.displayName,
       photoUrl:
-        this.RoomProducts[0]?.ProductPhotos[0].url ||
+        this.RoomProducts[0]?.ProductPhotos[0]?.url ||
         DEFAULT_IMAGE_FOR_GIVEAWAY,
       startAt: getTimestamp(this.startAt),
       finishAt: getTimestamp(this.finishAt),
