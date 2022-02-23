@@ -22,7 +22,13 @@ class UserView {
   }
 
   userAddress(detailAddress) {
-    const { address, street, city, province, zipCode } = detailAddress;
+    const {
+      address = '',
+      street = '',
+      city = '',
+      province = '',
+      zipCode = '',
+    } = detailAddress;
     return { address, street, city, province, zipCode };
   }
 
@@ -31,13 +37,13 @@ class UserView {
       id: this.id,
       email: this.email,
       emailVerified: this.emailVerified,
-      displayName: this.UserDetail.displayName,
-      firstname: this.UserDetail.firstname,
-      lastname: this.UserDetail.lastname,
-      birthday: this.UserDetail.birthday,
-      gender: this.UserDetail.gender,
+      displayName: this.UserDetail?.displayName,
+      firstname: this.UserDetail?.firstname,
+      lastname: this.UserDetail?.lastname,
+      birthday: this.UserDetail?.birthday,
+      gender: this.UserDetail?.gender,
       address: this.userAddress(this.UserAddress),
-      phoneNumber: this.UserDetail.phoneNumber,
+      phoneNumber: this.UserDetail?.phoneNumber,
       photoUrl: this.photoUrl,
       createdAt: getTimestamp(this.createdAt),
       updatedAt: getTimestamp(this.updatedAt),
