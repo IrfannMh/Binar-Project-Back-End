@@ -105,7 +105,7 @@ exports.updateUserAddress = async (req, res) => {
 };
 
 exports.updateUserDetail = async (req, res) => {
-  const { photoUrl, firstname, lastname, gender, birthday } = req.body;
+  const { photoUrl, firstname, lastname, gender, birthday, phoneNumber } = req.body;
 
   await UserDetail.update(
     {
@@ -114,6 +114,7 @@ exports.updateUserDetail = async (req, res) => {
       lastname,
       gender,
       birthday,
+      phoneNumber,
     },
     {
       where: {
