@@ -32,16 +32,23 @@ class UserView {
     return { address, street, city, province, zipCode };
   }
 
+  getFullname(firstname, lastname) {
+    return `${firstname} ${lastname}`;
+  }
+
   toJSON() {
     return {
       id: this.id,
       email: this.email,
       emailVerified: this.emailVerified,
-      displayName: this.UserDetail?.displayName,
-      firstname: this.UserDetail?.firstname,
-      lastname: this.UserDetail?.lastname,
-      birthday: this.UserDetail?.birthday,
-      gender: this.UserDetail?.gender,
+      displayName: this.getFullname(
+        this.UserDetail.firstname,
+        this.UserDetail.lastname
+      ),
+      firstname: this.UserDetail.firstname,
+      lastname: this.UserDetail.lastname,
+      birthday: getTimestamp(this.UserDetail.birthday),
+      gender: this.UserDetail.gender,
       address: this.userAddress(this.UserAddress),
       phoneNumber: this.UserDetail?.phoneNumber,
       photoUrl: this.photoUrl,

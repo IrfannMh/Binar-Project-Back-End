@@ -1,4 +1,5 @@
 const { User, UserDetail, UserAddress } = require('../models');
+const { getStandartDate } = require('../utils/time');
 const { createUUID } = require('./GlobalServices');
 
 const splitName = (name) => {
@@ -35,7 +36,6 @@ exports.addUserDetail = async (user) => {
   const fullName = splitName(name);
   const newUserDetail = await UserDetail.create({
     id: createUUID(),
-    displayName: name,
     userId: uid,
     firstname: fullName[0],
     lastname: fullName[1],
@@ -87,14 +87,14 @@ exports.getUser = async (req, res) => {
 };
 
 exports.updateUserAddress = async (req, res) => {
-  const { address, street, city, province, zipcode } = req.body;
+  const { address, street, city, province, zipCode } = req.body;
   await UserAddress.update(
     {
       address,
       street,
       city,
       province,
-      zipcode,
+      zipCode,
     },
     {
       where: {
@@ -105,7 +105,8 @@ exports.updateUserAddress = async (req, res) => {
 };
 
 exports.updateUserDetail = async (req, res) => {
-  const { photoUrl, firstname, lastname, gender, birthday, phoneNumber } = req.body;
+  const { photoUrl, firstname, lastname, gender, birthday, phoneNumber } =
+    req.body;
 
   await UserDetail.update(
     {
@@ -113,7 +114,7 @@ exports.updateUserDetail = async (req, res) => {
       firstname,
       lastname,
       gender,
-      birthday,
+      birthday: getStandartDate(birthday),
       phoneNumber,
     },
     {
