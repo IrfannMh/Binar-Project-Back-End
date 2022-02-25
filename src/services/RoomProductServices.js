@@ -116,6 +116,24 @@ exports.addProductsPhoto = async (req) => {
   return addPhoto;
 };
 
+const deletePhotoInCloud = (photoId) =>
+  imagekit.deleteFile(photoId, (error, result) => {
+    if (error) console.log(`err: ${error}`);
+    else console.log(`ok ${result}`);
+  });
+
+exports.deleteProductImage = async ({ productId, photoId }) => {
+  if (!checkValidUUID(productId)) return NOT_FOUND;
+  const photo = await ProductPhoto.findByPk(photoId);
+  if (!photo) return NOT_FOUND;
+
+  imagekit.deleteFile(photoId);
+
+  const deletedPhoto = await ProductPhoto.destroy({ where: { id: photoId } });
+
+  return deletedPhoto;
+};
+
 exports.updateTableProduct = async (req, category) => {
   const { name, qty, description } = req.body;
   const update = await RoomProduct.update(
