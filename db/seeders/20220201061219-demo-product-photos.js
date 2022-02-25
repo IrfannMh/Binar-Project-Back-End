@@ -13,21 +13,13 @@ module.exports = {
     */
      await queryInterface.bulkInsert('ProductPhotos', [
       {
-        id: 'ec9872d5-13e6-45ce-97c0-b9c29d9e19d1',
-        title: 'photo 1',
-        url: "https://m.media-amazon.com/images/I/51q2t2DUpaL._AC_SX425_.jpg",
+        id: '6218b077b028756ba44b0568',
+        title: 'Default_Product_Photo_M4InQ1Ovo.png',
+        url: "https://ik.imagekit.io/8ikxgq8bfhts/products/Default_Product_Photo_M4InQ1Ovo.png",
         productId: "ed459065-8372-4cc7-bfa3-98d68650ca95",
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
-      {
-        id: 'f3ece232-8660-459f-ac86-b4cb3d6c8ed1',
-        title: 'photo 2',
-        url: "https://m.media-amazon.com/images/I/61jZqsS3sPL._AC_SX466_.jpg",
-        productId: "ed459065-8372-4cc7-bfa3-98d68650ca95",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
+      }
     ]);
   },
 

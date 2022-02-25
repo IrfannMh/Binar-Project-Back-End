@@ -26,8 +26,8 @@ class RoomProductsView {
   }
 
   photoProduct(photos) {
-    const { title, url, alt } = photos;
-    return { title, url, alt };
+    const { id, title, url, alt } = photos;
+    return { id, title, url, alt };
   }
 
   toJSON() {

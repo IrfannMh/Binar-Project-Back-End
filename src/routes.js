@@ -1,3 +1,4 @@
+const multer = require('multer');
 const { handleGetRoot } = require('./controllers/MainController');
 const {
   registerAnUser,
@@ -13,6 +14,8 @@ const {
   addProductPhoto,
   updateProduct,
   deleteProduct,
+  deleteProductPhoto,
+  updateProductPhoto,
 } = require('./controllers/RoomProductController');
 const {
   handleGetAllProductCategories,
@@ -36,6 +39,8 @@ const {
 const { verifyRoomOwner } = require('./middleware/room');
 const { verifyUser } = require('./middleware/user');
 
+const uploader = multer();
+
 module.exports = (router) => {
   router.get('/', handleGetRoot);
 
@@ -48,12 +53,30 @@ module.exports = (router) => {
   router.post('/api/v1/products', authenticate, verifyUser, createRoomProducts);
   router.get('/api/v1/products', getRoomProducts);
   router.get('/api/v1/products/:id', getProducts);
+
   router.post(
     '/api/v1/products/:id/photos',
     authenticate,
     verifyUser,
+    uploader.single('productPhoto'),
     addProductPhoto
   );
+
+  router.delete(
+    '/api/v1/products/:id/photos/:photoId',
+    authenticate,
+    verifyUser,
+    deleteProductPhoto
+  );
+
+  router.put(
+    '/api/v1/products/:id/photos/:photoId',
+    authenticate,
+    verifyUser,
+    uploader.single('productPhoto'),
+    updateProductPhoto
+  );
+
   router.put('/api/v1/products/:id', authenticate, verifyUser, updateProduct);
   router.delete(
     '/api/v1/products/:id',

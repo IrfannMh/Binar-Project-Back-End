@@ -11,7 +11,11 @@ const {
   addProductsPhoto,
   updateTableProduct,
   deleteTableProduct,
+  deleteProductImage,
+  updateProductImage,
 } = require('../services/RoomProductServices');
+const { NOT_FOUND, REQURIED_FIELD } = require('../utils/constants');
+const ProductPhotoView = require('../views/ProductPhotoView');
 
 exports.createRoomProducts = asyncWrapper(async (req, res) => {
   if (await checkProductField(req, res)) {
@@ -52,12 +56,59 @@ exports.getProducts = asyncWrapper(async (req, res) => {
 
 exports.addProductPhoto = asyncWrapper(async (req, res) => {
   const addPhoto = await addProductsPhoto(req);
-  return res.ok(201, addPhoto);
+
+  if (addPhoto === NOT_FOUND) {
+    return res.fail(404, {
+      name: NOT_FOUND,
+      message: 'Please check productId. product not found !',
+    });
+  }
+
+  const response = new ProductPhotoView(addPhoto);
+  return res.ok(201, response);
+});
+
+exports.deleteProductPhoto = asyncWrapper(async (req, res) => {
+  const deletePhoto = await deleteProductImage({
+    productId: req.params.id,
+    photoId: req.params.photoId,
+  });
+
+  if (deletePhoto === NOT_FOUND) {
+    return res.fail(404, {
+      name: NOT_FOUND,
+      message: 'product photo not found!',
+    });
+  }
+
+  return res.ok(200, {});
+});
+
+exports.updateProductPhoto = asyncWrapper(async (req, res) => {
+  const updatePhoto = await updateProductImage(req);
+
+  if (updatePhoto === NOT_FOUND) {
+    return res.fail(404, {
+      name: NOT_FOUND,
+      message: 'product photo not found!',
+    });
+  }
+
+  if (updatePhoto === REQURIED_FIELD) {
+    return res.fail(404, {
+      name: REQURIED_FIELD,
+      message: 'please check required field!',
+    });
+  }
+
+  const response = new ProductPhotoView(updatePhoto);
+
+  return res.ok(200, response);
 });
 
 exports.updateProduct = asyncWrapper(async (req, res) => {
   const product = await findProduct(req, res);
-  console.log('product', product);
+
   if (!product) {
     return res.fail(404, {
       name: 'Not Found',
@@ -67,7 +118,6 @@ exports.updateProduct = asyncWrapper(async (req, res) => {
 
   const category = await findCategory(req);
 
-  console.log('id category', category);
   await updateTableProduct(req, category);
 
   const updatedProduct = new ProductView(await findProduct(req, res));

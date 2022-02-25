@@ -1,3 +1,4 @@
+const imagekit = require('../config/imagekit');
 const {
   RoomProduct,
   Rooms,
@@ -6,6 +7,8 @@ const {
   User,
   UserAddress,
 } = require('../models');
+const { NOT_FOUND } = require('../utils/constants');
+const { checkValidUUID } = require('../utils/uuid');
 
 exports.checkProductField = async (req, res) => {
   const { name, qty, description } = req.body;
@@ -77,15 +80,76 @@ exports.getAllRoomProducts = async () => {
   return roomproducts;
 };
 
-exports.addProductsPhoto = async (req) => {
-  const { title, alt, url } = req.body;
-  const newProductPhoto = await ProductPhoto.create({
-    title,
-    alt,
-    url,
-    productId: req.params.id,
+const getInfoProductPhoto = async (file, filename) => {
+  const ext = file.originalname.split('.')[1];
+  const fileName = `${filename}.${ext}`;
+
+  const upload = await imagekit.upload({
+    file: file.buffer.toString('base64'),
+    fileName,
+    folder: 'products',
   });
-  return newProductPhoto;
+
+  return upload;
+};
+
+exports.addProductsPhoto = async (req) => {
+  const { title, alt } = req.body;
+  const { file } = req;
+  const productId = req.params.id;
+
+  if (!checkValidUUID(productId)) return NOT_FOUND;
+  const checkProduct = await RoomProduct.findByPk(productId);
+  if (!checkProduct) return NOT_FOUND;
+
+  const filename = title || checkProduct.name;
+  const uploadImage = await getInfoProductPhoto(file, filename);
+
+  const addPhoto = await ProductPhoto.create({
+    id: uploadImage.fileId,
+    title: filename,
+    alt: alt || filename,
+    url: uploadImage.url,
+    productId,
+  });
+
+  return addPhoto;
+};
+
+exports.deleteProductImage = async ({ productId, photoId }) => {
+  if (!checkValidUUID(productId)) return NOT_FOUND;
+  const photo = await ProductPhoto.findByPk(photoId);
+  if (!photo) return NOT_FOUND;
+
+  await imagekit.deleteFile(photoId);
+
+  const deletedPhoto = await ProductPhoto.destroy({ where: { id: photoId } });
+
+  return deletedPhoto;
+};
+
+exports.updateProductImage = async (req) => {
+  const productId = req.params.id;
+  const { photoId } = req.params;
+  const { title, alt } = req.body;
+
+  if (!checkValidUUID(productId)) return NOT_FOUND;
+  const photo = await ProductPhoto.findByPk(photoId);
+  if (!photo) return NOT_FOUND;
+
+  const filename = title || photo.name;
+
+  await ProductPhoto.update(
+    {
+      title: filename,
+      alt: alt || filename,
+    },
+    { where: { id: photoId } }
+  );
+
+  const newPhoto = await ProductPhoto.findByPk(photoId);
+
+  return newPhoto;
 };
 
 exports.updateTableProduct = async (req, category) => {
