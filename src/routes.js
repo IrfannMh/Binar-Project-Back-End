@@ -1,3 +1,4 @@
+const multer = require('multer');
 const { handleGetRoot } = require('./controllers/MainController');
 const {
   registerAnUser,
@@ -36,6 +37,8 @@ const {
 const { verifyRoomOwner } = require('./middleware/room');
 const { verifyUser } = require('./middleware/user');
 
+const uploader = multer();
+
 module.exports = (router) => {
   router.get('/', handleGetRoot);
 
@@ -52,6 +55,7 @@ module.exports = (router) => {
     '/api/v1/products/:id/photos',
     authenticate,
     verifyUser,
+    uploader.single('productPhoto'),
     addProductPhoto
   );
   router.put('/api/v1/products/:id', authenticate, verifyUser, updateProduct);

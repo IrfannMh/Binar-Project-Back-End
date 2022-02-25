@@ -12,6 +12,8 @@ const {
   updateTableProduct,
   deleteTableProduct,
 } = require('../services/RoomProductServices');
+const { NOT_FOUND } = require('../utils/constants');
+const ProductPhotoView = require('../views/ProductPhotoView');
 
 exports.createRoomProducts = asyncWrapper(async (req, res) => {
   if (await checkProductField(req, res)) {
@@ -52,7 +54,16 @@ exports.getProducts = asyncWrapper(async (req, res) => {
 
 exports.addProductPhoto = asyncWrapper(async (req, res) => {
   const addPhoto = await addProductsPhoto(req);
-  return res.ok(201, addPhoto);
+
+  if (addPhoto === NOT_FOUND) {
+    return res.fail(404, {
+      name: NOT_FOUND,
+      message: 'Please check productId. product not found !',
+    });
+  }
+
+  const response = new ProductPhotoView(addPhoto);
+  return res.ok(201, response);
 });
 
 exports.updateProduct = asyncWrapper(async (req, res) => {
