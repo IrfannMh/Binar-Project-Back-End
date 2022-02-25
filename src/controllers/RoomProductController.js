@@ -12,8 +12,9 @@ const {
   updateTableProduct,
   deleteTableProduct,
   deleteProductImage,
+  updateProductImage,
 } = require('../services/RoomProductServices');
-const { NOT_FOUND } = require('../utils/constants');
+const { NOT_FOUND, REQURIED_FIELD } = require('../utils/constants');
 const ProductPhotoView = require('../views/ProductPhotoView');
 
 exports.createRoomProducts = asyncWrapper(async (req, res) => {
@@ -81,6 +82,28 @@ exports.deleteProductPhoto = asyncWrapper(async (req, res) => {
   }
 
   return res.ok(200, {});
+});
+
+exports.updateProductPhoto = asyncWrapper(async (req, res) => {
+  const updatePhoto = await updateProductImage(req);
+
+  if (updatePhoto === NOT_FOUND) {
+    return res.fail(404, {
+      name: NOT_FOUND,
+      message: 'product photo not found!',
+    });
+  }
+
+  if (updatePhoto === REQURIED_FIELD) {
+    return res.fail(404, {
+      name: REQURIED_FIELD,
+      message: 'please check required field!',
+    });
+  }
+
+  const response = new ProductPhotoView(updatePhoto);
+
+  return res.ok(200, response);
 });
 
 exports.updateProduct = asyncWrapper(async (req, res) => {

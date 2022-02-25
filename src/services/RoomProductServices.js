@@ -116,22 +116,40 @@ exports.addProductsPhoto = async (req) => {
   return addPhoto;
 };
 
-const deletePhotoInCloud = (photoId) =>
-  imagekit.deleteFile(photoId, (error, result) => {
-    if (error) console.log(`err: ${error}`);
-    else console.log(`ok ${result}`);
-  });
-
 exports.deleteProductImage = async ({ productId, photoId }) => {
   if (!checkValidUUID(productId)) return NOT_FOUND;
   const photo = await ProductPhoto.findByPk(photoId);
   if (!photo) return NOT_FOUND;
 
-  imagekit.deleteFile(photoId);
+  await imagekit.deleteFile(photoId);
 
   const deletedPhoto = await ProductPhoto.destroy({ where: { id: photoId } });
 
   return deletedPhoto;
+};
+
+exports.updateProductImage = async (req) => {
+  const productId = req.params.id;
+  const { photoId } = req.params;
+  const { title, alt } = req.body;
+
+  if (!checkValidUUID(productId)) return NOT_FOUND;
+  const photo = await ProductPhoto.findByPk(photoId);
+  if (!photo) return NOT_FOUND;
+
+  const filename = title || photo.name;
+
+  await ProductPhoto.update(
+    {
+      title: filename,
+      alt: alt || filename,
+    },
+    { where: { id: photoId } }
+  );
+
+  const newPhoto = await ProductPhoto.findByPk(photoId);
+
+  return newPhoto;
 };
 
 exports.updateTableProduct = async (req, category) => {

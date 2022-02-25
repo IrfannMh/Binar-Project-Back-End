@@ -15,6 +15,7 @@ const {
   updateProduct,
   deleteProduct,
   deleteProductPhoto,
+  updateProductPhoto,
 } = require('./controllers/RoomProductController');
 const {
   handleGetAllProductCategories,
@@ -37,8 +38,6 @@ const {
 } = require('./controllers/RoomController');
 const { verifyRoomOwner } = require('./middleware/room');
 const { verifyUser } = require('./middleware/user');
-const asyncWrapper = require('./plugins/asyncWrapper');
-const imagekit = require('./config/imagekit');
 
 const uploader = multer();
 
@@ -68,6 +67,14 @@ module.exports = (router) => {
     authenticate,
     verifyUser,
     deleteProductPhoto
+  );
+
+  router.put(
+    '/api/v1/products/:id/photos/:photoId',
+    authenticate,
+    verifyUser,
+    uploader.single('productPhoto'),
+    updateProductPhoto
   );
 
   router.put('/api/v1/products/:id', authenticate, verifyUser, updateProduct);
