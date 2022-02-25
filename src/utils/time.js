@@ -1,1 +1,4 @@
-exports.getStandartDate = (date) => new Date(date);
+exports.getStandartDate = (date) => {
+  if (!date) return;
+  return new Date(date);
+};
