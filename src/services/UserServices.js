@@ -1,6 +1,7 @@
 const { User, UserDetail, UserAddress } = require('../models');
 const { getStandartDate } = require('../utils/time');
 const { createUUID } = require('./GlobalServices');
+const imagekit = require('../config/imagekit');
 
 const splitName = (name) => {
   const fullname = name.split(' ');
@@ -105,12 +106,10 @@ exports.updateUserAddress = async (req, res) => {
 };
 
 exports.updateUserDetail = async (req, res) => {
-  const { photoUrl, firstname, lastname, gender, birthday, phoneNumber } =
-    req.body;
+  const { firstname, lastname, gender, birthday, phoneNumber } = req.body;
 
   await UserDetail.update(
     {
-      photoUrl,
       firstname,
       lastname,
       gender,
@@ -120,6 +119,35 @@ exports.updateUserDetail = async (req, res) => {
     {
       where: {
         userId: req.params.id,
+      },
+    }
+  );
+};
+
+const getInfoPhotoUser = async (file) => {
+  const ext = file.originalname.split('.')[1];
+  const fileName = `${Date.now()}.${ext}`;
+
+  const upload = await imagekit.upload({
+    file: file.buffer.toString('base64'),
+    fileName,
+    folder: 'users',
+  });
+
+  return upload;
+};
+
+exports.updatePhotoUser = async (req) => {
+  const { file } = req;
+  const userId = req.params.id;
+  const uploadProfil = await getInfoPhotoUser(file);
+  await User.update(
+    {
+      photoUrl: uploadProfil.url,
+    },
+    {
+      where: {
+        id: userId,
       },
     }
   );

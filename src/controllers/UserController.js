@@ -11,6 +11,7 @@ const {
   findDetail,
   updateUserDetail,
   updateUserAddress,
+  updatePhotoUser,
 } = require('../services/UserServices');
 const UserView = require('../views/UserViews');
 
@@ -59,6 +60,7 @@ exports.handleUpdateUser = asyncWrapper(async (req, res) => {
   }
   await updateUserDetail(req, res);
   await updateUserAddress(req, res);
+  await updatePhotoUser(req);
   const update = new UserView(await findDetail(req, res));
   return res.ok(200, update);
 });
