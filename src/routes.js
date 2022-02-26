@@ -47,7 +47,12 @@ module.exports = (router) => {
   router.post('/api/v1/register', authenticate, registerAnUser);
   router.get('/api/v1/users', handleGetAllUser);
   router.get('/api/v1/users/:id', handleGetUser);
-  router.put('/api/v1/users/:id', authenticate, handleUpdateUser);
+  router.put(
+    '/api/v1/users/:id',
+    authenticate,
+    uploader.single('photoUrl'),
+    handleUpdateUser
+  );
   router.delete('/api/v1/users/:id', authenticate, handleDeleteUser);
 
   router.post('/api/v1/products', authenticate, verifyUser, createRoomProducts);
